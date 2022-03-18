@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReportsController!{% endblock %}
+
+{% block body %}
+<style>
+    a, .btn {
+        margin-top: 10px;
+        background-color: lightseagreen;
+        border: none;
+        box-shadow: gray 0 2px 4px;
+        text-decoration: none;
+    }
+
+    .form-control {
+        max-width: 200px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+</style>
+
+<div class="container">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <form action="{{ path('reports') }}" method="get">
+        <label for="input-account-id">Please enter the Account ID you'd like to display:</label>
+        <input id="input-account-id" name="accountId" type="text" placeholder="Account ID"
+               class="form-control" value="{{ accountId }}" required/>
+        <input id="btn-get-data" type="submit" formmethod="get" value="GET DATA" class="btn btn-success mb-3"/>
+        <a href="{{ path('reports') }}"><button class="btn btn-success mb-3" type="button">SHOW ALL</button></a>
+    </form>
+
+    <p>Aggregated performance for All <b>ACTIVE</b> accounts is listed below:</p>
+    <hr/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Account ID</th>
+                <th>Spend</th>
+                <th>Clicks</th>
+                <th>Impressions</th>
+                <th>Cost per Click</th>
+            </tr>
+        </thead>
+
+        {% for account in accounts %}
+            <tr>
+                <td>{{ account.accountName }}</td>
+                <td>{{ account.accountId }}</td>
+                <td>{{ account.spend }}</td>
+                <td>{{ account.clicks }}</td>
+                <td>{{ account.impressions }}</td>
+                <td>{{ account.costPerClick }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% for message in app.flashes('accounts_table_error') %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
